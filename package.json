@@ -8,6 +8,7 @@
   "devDependencies": {},
   "scripts": {
     "rf": "node ./services/renameFiles.js",
+    "rfs": "node ./services/renameFilesWithStructureChange.js",
     "rd": "node ./services/renameDirs.js",
     "pi": "node ./services/inventory.js",
     "ps": "node ./services/sizes.js",
