@@ -11,6 +11,9 @@
     "rd": "node ./services/renameDirs.js",
     "pi": "node ./services/inventory.js",
     "ps": "node ./services/sizes.js",
+    "gc": "node ./services/config.js",
+    "ct": "node ./services/checkTranslation.js",
+    "gt": "node ./services/generateTranslation.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
