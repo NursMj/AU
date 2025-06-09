@@ -12,10 +12,22 @@ const missingTranslations: string[] = [];
 const typeAndLvl = {};
 
 type TMark = {
-	text: string
-}
+    text: string;
+};
 
-Object.entries(translationConsumer).forEach(([typeKey, type]) => {
+type FloorData = {
+    labels: TMark[];
+};
+
+type FloorStructure = {
+    [floorKey: string]: FloorData;
+};
+
+type TranslationConsumer = {
+    [typeKey: string]: FloorStructure;
+};
+
+Object.entries(translationConsumer as TranslationConsumer).forEach(([typeKey, type]) => {
 	Object.entries(type).forEach(([floorKey, floors]) => {
 		Object.entries(floors).forEach(([markGroupKey, markGroupValue]) => {
 			if (markGroupKey === 'labels') {
