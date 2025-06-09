@@ -1,11 +1,15 @@
-const fs = require('fs').promises;
-const path = require('path');
-const { toCode } = require('./utils')
+import { promises as fs } from 'fs';
+import path from 'path';
+import { toCode } from './utils';
+import { getCurrentDir } from './utils/index.js';
+
+const __dirname = getCurrentDir(import.meta);
 
 const dirsToRename = ['Dark', 'Light'];
 
 const conditionToRenameDir = (file) => {
-  // return file.toLowerCase().includes('SUR')
+  // return dirsToRename.includes(file)
+  // return file.includes("_")
   return true
 }
 

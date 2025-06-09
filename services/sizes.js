@@ -1,9 +1,10 @@
-const xlsx = require('node-xlsx');
-const fs = require('fs');
-const path = require('path');
-const util = require('util');
-const { toCode } = require('./utils')
+import xlsx from 'node-xlsx';
+import fs from 'fs';
+import path from 'path';
+import util from 'util';
+import { getCurrentDir, toCode } from './utils/index.js';
 
+const __dirname = getCurrentDir(import.meta);
 
 const unitsInfo = require('../input/unitsInfo.js');
 
@@ -12,126 +13,62 @@ const inputDir = path.join(__dirname, '../input');
 const outputFilePath = path.join(outputDir, `sizesOutput.js`);
 
 const obj = xlsx.parse(inputDir + '/Sizes.xlsx');
-const data = obj[1].data.slice(1);
+const headerRows = 1;
+const data = obj[0].data.slice(headerRows);
 
-const typesInfo = {};
-const tooltipInfo = {};
+let typesInfo = {};
+let currentLevelType = null;
+let currentType = null;
 
-let currentType;
-let currentFloor;
+// console.log(data.slice(0, 2))
 
-let currentProject;
+const setSyzeTypeForUnits = (arr, typeForSezes) => {
+	arr.forEach((unit) => {
+		const unitKey = 'BA_' + unit;
+		if (unitsInfo[unitKey]) {
+			unitsInfo[unitKey].type_for_sizes = typeForSezes;
+		} else {
+			console.log('no units info for :>> ', unitKey);
+		}
+	});
+};
 
-data.forEach((lm) => {
-	const [lmName, project, min, km] = lm;
+data.forEach((row, i) => {
+	const [levelType, _, unitType, unitNumbers, roomName, width, length] = row;
 
-	let _project = toCode(project);
+	if (!roomName) return;
 
-	if (!lmName) return;
+	if (levelType) currentLevelType = levelType.replaceAll(',', ' ');
+	if (unitType) currentType = unitType;
 
-	if (_project) {
-		currentProject = _project;
-	} else {
-		_project = currentProject;
+	const ultraType = toCode(`${currentLevelType} ${currentType}`);
+
+	if (!typesInfo[ultraType]) {
+		typesInfo[ultraType] = {};
 	}
 
-	const lmCode = toCode(lmName);
-
-	if (typesInfo[lmCode]) {
-		typesInfo[lmCode].distance[_project] = {
-			en: `${min} min | ${km} km`,
-			ar: `${min} كم | ${km} الدقائق`,
-		};
-		return;
+	if (unitNumbers) {
+		const units = String(unitNumbers).replaceAll('.', ',').replaceAll(' ', '').split(',');
+		setSyzeTypeForUnits(units, ultraType);
 	}
 
-	const lmObj = {
-		title: {
-			en: lmName,
-			ar: lmName,
-		},
-		description: {
-			en: 'Description',
-			ar: 'Description',
-		},
-		distance: {
-			[_project]: {
-				en: `${min} min | ${km} km`,
-				ar: `${min} كم | ${km} الدقائق`,
-			},
-		},
-		image: {
-			desktop: `./images/landmarks/yas_island/desktop/${lmCode}.jpg`,
-			mobile: `./images/landmarks/yas_island/mobile/${lmCode}.jpg`
-		},
-	};
+	// const [length, width] = size.replace('х', 'x').replace('×', 'x').replace('  ', 'x').split('x')
 
-	typesInfo[lmCode] = lmObj;
+	const roomCode = toCode(roomName);
+	const roomObj = { x: parseFloat(length) ?? 0, y: parseFloat(width) ?? 0 };
+
+	if ((roomObj.x === 0 && roomObj.y === 0) || (isNaN(roomObj.x) && isNaN(roomObj.y))) return;
+
+	if (!roomObj.x || !roomObj.y) {
+		console.log(`Somthin wrong with _type: ${ultraType}, room: ${roomName} on line ${headerRows + i + 1}`);
+		console.log('roomObj :>> ', roomObj);
+	}
+
+	typesInfo[ultraType][roomCode] = roomObj;
 });
-
-// data.forEach((room) => {
-// 	const [type, floor, popupVR, roomName, height, width, length, area] = room;
-
-// 	let _type = type
-// 	let _floor = floor === 'FF' ? '1F' : floor
-
-// 	if (!roomName) return;
-
-// 	if (_type) {
-// 		currentType = _type;
-// 		typesInfo[currentType] = {}
-// 	} else {
-// 		_type = currentType;
-// 	};
-
-// 	if (_floor) {
-// 		currentFloor = _floor;
-// 		typesInfo[currentType][currentFloor] = {}
-// 	} else {
-// 		_floor = currentFloor;
-// 	};
-
-// 	if (popupVR && popupVR !== 'No pop-up') {
-
-// 		if (!tooltipInfo[_type]) {
-// 			tooltipInfo[_type] = {}
-// 		};
-
-// 		const tooltipObj = {
-// 			area: Math.round(parseFloat(area) * 100) / 100,
-// 			length: parseFloat(length),
-// 			width: parseFloat(width),
-// 			height: parseFloat(height),
-// 			color: 'dark',
-// 		};
-
-// 		tooltipInfo[_type][popupVR] = tooltipObj;
-// 	}
-
-// 	const roomCode = roomName.toLowerCase().trim().replaceAll(/\s/g, '_').replaceAll('/', '_').replaceAll("'", '').replace(/_+/g, '_');
-// 	const roomObj = { x: parseFloat(length), y: parseFloat(width) };
-
-// 	if (!roomObj.x || !roomObj.y) {
-// 		console.log(`Somthin wrong with _type: ${_type}, room: ${roomName}`)
-// 		console.log('roomObj :>> ', roomObj);
-// 	}
-
-// 	typesInfo[_type][_floor][roomCode] = roomObj;
-
-// 	// if (floor) {
-// 	// 	currentFloor = floor;
-// 	// 	typesInfo[currentType][currentFloor] = {};
-// 	// }
-
-// 	// const [x, y] = extractNumbers(size);
-
-// 	// if (!x || !y) console.log(`Somthin wrong with _type: ${currentType}, floor: ${currentFloor}, room: ${roomName}`)
-
-// 	// if (x && y) typesInfo[currentType][currentFloor][roomCode] = { x, y };
-// });
 
 fs.writeFileSync(
 	outputFilePath,
 	`// File Record Time: ${new Date()} \n\nexport default ` +
-		util.inspect({ typesInfo, tooltipInfo }, { showHidden: false, depth: null, maxArrayLength: null })
+		util.inspect({ typesInfo, unitsInfo }, { showHidden: false, depth: null, maxArrayLength: null })
 );

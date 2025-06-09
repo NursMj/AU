@@ -1,114 +1,141 @@
-const all = [
-	['yamm_beach_villas-01.jpg', 'Yamm Beach Villas-01.jpg'],
-	['yamm_beach_villas-02.jpg', 'Yamm Beach Villas-02.jpg'],
-	['yamm_beach_villas-03.jpg', 'Yamm Beach Villas-03.jpg'],
-	['yamm_beach_villas-04.jpg', 'Yamm Beach Villas-04.jpg'],
-	['yamm_beach_villas-05.jpg', 'Yamm Beach Villas-05.jpg'],
-	['yamm_beach_villas-06.jpg', 'Yamm Beach Villas-06.jpg'],
-	['yamm_beach_villas-07.jpg', 'Yamm Beach Villas-07.jpg'],
-	['yamm_beach_villas-08.jpg', 'Yamm Beach Villas-08.jpg'],
-	['yamm_beach_villas-09.jpg', 'Yamm Beach Villas-09.jpg'],
-	['yamm_beach_villas-10.jpg', 'Yamm Beach Villas-10.jpg'],
-	['yamm_beach_villas-11.jpg', 'Yamm Beach Villas-11.jpg'],
-	['yamm_beach_villas-12.jpg', 'Yamm Beach Villas-12.jpg'],
-	['yamm_beach_villas-13.jpg', 'Yamm Beach Villas-13.jpg'],
-	['yamm_beach_villas-14.jpg', 'Yamm Beach Villas-14.jpg'],
-	['yamm_beach_villas-15.jpg', 'Yamm Beach Villas-15.jpg'],
-	['yamm_beach_villas-16.jpg', 'Yamm Beach Villas-16.jpg'],
-	['yamm_beach_villas-17.jpg', 'Yamm Beach Villas-17.jpg'],
-	['yamm_beach_villas-18.jpg', 'Yamm Beach Villas-18.jpg'],
-	['yamm_beach_villas-19.jpg', 'Yamm Beach Villas-19.jpg'],
-	['yamm_beach_villas-20.jpg', 'Yamm Beach Villas-20.jpg'],
-	['yamm_beach_villas-21.jpg', 'Yamm Beach Villas-21.jpg'],
-	['yamm_beach_villas-22.jpg', 'Yamm Beach Villas-22.jpg'],
-	['yamm_beach_villas-23.jpg', 'Yamm Beach Villas-23.jpg'],
-	['yamm_beach_villas-24.jpg', 'Yamm Beach Villas-24.jpg'],
-	['yamm_beach_villas-25.jpg', 'Yamm Beach Villas-25.jpg'],
-	['yamm_beach_villas-26.jpg', 'Yamm Beach Villas-26.jpg'],
-	['yamm_beach_villas-27.jpg', 'Yamm Beach Villas-27.jpg'],
-	['yamm_beach_villas-28.jpg', 'Yamm Beach Villas-28.jpg'],
-	['yamm_beach_villas-29.jpg', 'Yamm Beach Villas-29.jpg'],
-	['yamm_beach_villas-30.jpg', 'Yamm Beach Villas-30.jpg'],
-	['yamm_beach_villas-31.jpg', 'Yamm Beach Villas-31.jpg'],
-	['yamm_beach_villas-32.jpg', 'Yamm Beach Villas-32.jpg'],
-	['yamm_beach_villas-33.jpg', 'Yamm Beach Villas-33.jpg'],
-	['yamm_beach_villas-34.jpg', 'Yamm Beach Villas-34.jpg'],
-	['yamm_beach_villas-35.jpg', 'Yamm Beach Villas-35.jpg'],
-	['yamm_beach_villas-36.jpg', 'Yamm Beach Villas-36.jpg'],
-	['yamm_beach_villas-37.jpg', 'Yamm Beach Villas-37.jpg'],
-	['yamm_beach_villas-38.jpg', 'Yamm Beach Villas-38.jpg'],
-	['yamm_beach_villas-39.jpg', 'Yamm Beach Villas-39.jpg'],
-	['yamm_beach_villas-40.jpg', 'Yamm Beach Villas-40.jpg'],
-	['yamm_beach_villas-41.jpg', 'Yamm Beach Villas-41.jpg'],
-	['yamm_beach_villas-42.jpg', 'Yamm Beach Villas-42.jpg'],
-	['yamm_beach_villas-43.jpg', 'Yamm Beach Villas-43.jpg'],
-	['yamm_beach_villas-44.jpg', 'Yamm Beach Villas-44.jpg'],
-	['yamm_beach_villas-45.jpg', 'Yamm Beach Villas-45.jpg'],
-	['yamm_beach_villas-46.jpg', 'Yamm Beach Villas-46.jpg'],
-	['yamm_beach_villas-47.jpg', 'Yamm Beach Villas-47.jpg'],
-	['yamm_beach_villas-48.jpg', 'Yamm Beach Villas-48.jpg'],
-	['yamm_beach_villas-49.jpg', 'Yamm Beach Villas-49.jpg'],
-	['yamm_beach_villas-50.jpg', 'Yamm Beach Villas-50.jpg'],
-	['yamm_beach_villas-51.jpg', 'Yamm Beach Villas-51.jpg'],
-	['yamm_beach_villas-52.jpg', 'Yamm Beach Villas-52.jpg'],
-	['yamm_beach_villas-53.jpg', 'Yamm Beach Villas-53.jpg'],
-	['yamm_beach_villas-54.jpg', 'Yamm Beach Villas-54.jpg'],
-	['yamm_beach_villas-55.jpg', 'Yamm Beach Villas-55.jpg'],
-	['yamm_beach_villas-56.jpg', 'Yamm Beach Villas-56.jpg'],
-	['yamm_beach_villas-57.jpg', 'Yamm Beach Villas-57.jpg'],
-	['yamm_beach_villas-58.jpg', 'Yamm Beach Villas-58.jpg'],
-	['yamm_beach_villas-59.jpg', 'Yamm Beach Villas-59.jpg'],
-	['yamm_beach_villas-60.jpg', 'Yamm Beach Villas-60.jpg'],
-	['yamm_beach_villas-61.jpg', 'Yamm Beach Villas-61.jpg'],
-	['yamm_beach_villas-62.jpg', 'Yamm Beach Villas-62.jpg'],
-	['yamm_beach_villas-63.jpg', 'Yamm Beach Villas-63.jpg'],
-	['yamm_beach_villas-64.jpg', 'Yamm Beach Villas-64.jpg'],
-	['yamm_beach_villas-65.jpg', 'Yamm Beach Villas-65.jpg'],
-	['yamm_beach_villas-66.jpg', 'Yamm Beach Villas-66.jpg'],
-	['yamm_beach_villas-67.jpg', 'Yamm Beach Villas-67.jpg'],
-	['yamm_beach_villas-68.jpg', 'Yamm Beach Villas-68.jpg'],
-	['yamm_beach_villas-69.jpg', 'Yamm Beach Villas-69.jpg'],
-	['yamm_beach_villas-70.jpg', 'Yamm Beach Villas-70.jpg'],
-	['yamm_beach_villas-71.jpg', 'Yamm Beach Villas-71.jpg'],
-	['yamm_beach_villas-72.jpg', 'Yamm Beach Villas-72.jpg'],
-	['yamm_beach_villas-73.jpg', 'Yamm Beach Villas-73.jpg'],
-	['yamm_beach_villas-74.jpg', 'Yamm Beach Villas-74.jpg'],
-	['yamm_beach_villas-75.jpg', 'Yamm Beach Villas-75.jpg'],
-	['yamm_beach_villas-76.jpg', 'Yamm Beach Villas-76.jpg'],
-	['yamm_beach_villas-77.jpg', 'Yamm Beach Villas-77.jpg'],
-	['yamm_beach_villas-78.jpg', 'Yamm Beach Villas-78.jpg'],
-	['yamm_beach_villas-79.jpg', 'Yamm Beach Villas-79.jpg'],
-	['yamm_beach_villas-80.jpg', 'Yamm Beach Villas-80.jpg'],
-	['yamm_beach_villas-81.jpg', 'Yamm Beach Villas-81.jpg'],
-	['yamm_beach_villas-82.jpg', 'Yamm Beach Villas-82.jpg'],
-	['yamm_beach_villas-83.jpg', 'Yamm Beach Villas-83.jpg'],
-	['yamm_beach_villas-84.jpg', 'Yamm Beach Villas-84.jpg'],
-	['yamm_beach_villas-85.jpg', 'Yamm Beach Villas-85.jpg'],
-	['yamm_beach_villas-86.jpg', 'Yamm Beach Villas-86.jpg'],
-	['yamm_beach_villas-87.jpg', 'Yamm Beach Villas-87.jpg'],
-	['yamm_beach_villas-88.jpg', 'Yamm Beach Villas-88.jpg'],
-];
+import fs from 'fs';
+import util from 'util';
+import path from 'path';
+import { getCurrentDir } from './utils/index.js';
 
-const project = 'brochure';
-// const contetnArray = [];
+const __dirname = getCurrentDir(import.meta);
 
-all.sort(([_a, fileNameA], [_b, fileNameB]) => parseInt(fileNameA.split('-')[1]) - parseInt(fileNameB.split('-')[1]));
+const inputDir = path.join(__dirname, '../input/filesToDeriveConfig');
+const outputDir = path.join(__dirname, '../output');
+const outputFilePath = path.join(outputDir, 'galleryCfgOutput.js');
 
-const cfg = all.map((name) => {
-	const config = {
-		src: `images/gallery/${project}/Full/${name[0]}`,
-		thumb: `images/gallery/${project}/Preview/${name[0]}`,
+const skipDirs = ['pdf_file', 'Preview'];
+const skipFiles = ['Thumbs.db', "Yamm Beach Villas.pdf"];
+
+// const all = [
+// 	'1 Waterfront View.jpg',
+// 	'2 Waterfront View.jpg',
+// 	'3 Arrival View.jpg',
+// 	'4 Residential Marina Overlook.jpg',
+// 	'5 Residential Side View.jpg',
+// 	'6 Waterfront Tower.jpg',
+// 	'7 Side View.jpg',
+// 	'8 Marina Promenade.jpg',
+// 	'9 Elevation.jpg',
+// 	'10 Facade.jpg',
+// 	'11 Facade.jpg',
+// 	'12 Side View.jpg',
+// 	'13 Front Elevation.jpg',
+// 	'14 Front Elevation.jpg',
+// 	'15 Drop Off.jpg',
+// 	'16 Drop Off.jpg',
+// 	'17 F&B Island-Tower.jpg',
+// 	'18 F&B Canopy.jpg',
+// 	'19 F&B Waterfront.jpg',
+// 	'20 Balcony View.jpg',
+// 	'21 Amenity 1F.jpg',
+// 	'22 Residential Lobby.jpg',
+// 	'23 Residential Lobby.jpg',
+// 	'24 Meeting Table.jpg',
+// 	'25 Double Height Space.jpg',
+// 	'26 Office Lobby A.jpg',
+// 	'27 Office Lobby B.jpg',
+// 	'28 Office Lobby C.jpg',
+// 	'29 Office Lobby D.jpg',
+// 	'30 Dining & Living Room.jpg',
+// ];
+
+const cfg = {};
+
+function removeFirstWordIfNumber(str) {
+	const words = str.trim().split(/\s+/);
+	if (words.length > 0 && !isNaN(words[0])) {
+		return words.slice(1).join(' ');
+	}
+	return str;
+}
+
+function getFilesPathsSync(dir) {
+	const allFilesName = [];
+	try {
+		const files = fs.readdirSync(dir);
+
+		for (const file of files) {
+			const filePath = path.join(dir, file);
+			try {
+				const stats = fs.statSync(filePath);
+
+				if (stats.isDirectory()) {
+					// Skip if directory is in skipDirs or is hidden (when skipHidden is true)
+					if (skipDirs.includes(file)) {
+						continue;
+					}
+					// Recursively handle subdirectories
+					const subDirFiles = getFilesPathsSync(filePath);
+					allFilesName.push(...subDirFiles);
+				} else if (stats.isFile()) {
+					if (!skipFiles.includes(file)) {
+						const parsedPath = path.parse(filePath);
+						const dirName = path.basename(parsedPath.dir);
+						const parentDir = path.basename(path.dirname(parsedPath.dir));
+						const grandparentDir = path.basename(path.dirname(path.dirname(parsedPath.dir)));
+
+						allFilesName.push([
+							filePath, // parentDir path
+							grandparentDir, // grandparent directory name
+							parentDir, // parent directory name
+							dirName, // immediate directory name
+							file, // filename
+						]);
+					}
+				}
+			} catch (err) {
+				console.error(`Unable to get file stats for ${filePath}:`, err);
+			}
+		}
+	} catch (err) {
+		console.error(`Unable to scan directory ${dir}:`, err);
+	}
+	return allFilesName;
+}
+
+const all = getFilesPathsSync(inputDir);
+
+// console.log('all :>> ', all);
+
+all.forEach((file) => {
+	const [filePath, grandparentDir, parentDir, dirName, fileName] = file;
+    
+    if (fileName === "Thumbs.db") return
+
+    const isVideo = fileName.includes('.mp4')
+    if (dirName.toLowerCase() === 'animation' && !isVideo) return
+    const imageFile = fileName.replace('.mp4', '.jpg')
+	const imgSrc = `./images/gallery/${grandparentDir}/Full/${dirName}/${imageFile}`;
+	const prevSrc = `./images/gallery/${grandparentDir}/Preview/${dirName}/${imageFile}`;
+	const title = removeFirstWordIfNumber(imageFile.replace('.jpg', ''));
+    const videoSrc = isVideo ? `./images/gallery/${grandparentDir}/Full/${dirName}/${fileName}` : false;
+
+	// const type = dirName.split(' ').slice(-1)[0].toLowerCase()
+
+	if (!cfg[grandparentDir]) cfg[grandparentDir] = {};
+	if (!cfg[grandparentDir][dirName]) cfg[grandparentDir][dirName] = [];
+
+	cfg[grandparentDir][dirName].push({
+		src: imgSrc,
+		thumb: prevSrc,
 		w: 1920,
 		h: 1080,
-		title: name[1].replaceAll('.jpg', ''),
-		// desk: '',
+		title,
+		desc: '',
 		mode: 'contain',
-	};
-
-	// contetnArray.push(`./images/popupUnit/${project}/${name[0]}`);
-
-	return config;
+		isVideo,
+		videoSrc,
+	});
 });
 
-console.log('cfg :>> ', cfg);
-// console.log('contetnArray :>> ', contetnArray);
+fs.writeFileSync(
+	outputFilePath,
+	`// File Record Time: ${new Date()} \n\nexport default ` +
+		util.inspect(cfg, { showHidden: false, depth: null, maxArrayLength: null })
+);

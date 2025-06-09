@@ -1,67 +1,80 @@
-const xlsx = require('node-xlsx');
-const fs = require('fs');
-const util = require('util');
-const path = require('path');
+import xlsx from 'node-xlsx';
+import fs from 'fs';
+import util from 'util';
+import path from 'path';
+import unitsInfoInput from '../input/unitsInfo.js';
+import { getCurrentDir, toCode } from './utils/index.js';
 
-const unitsInfo = require('../input/unitsInfo.js')
+const __dirname = getCurrentDir(import.meta);
+
+const unitsInfoOutput = {};
 
 const outputDir = path.join(__dirname, '../output');
 const inputDir = path.join(__dirname, '../input');
 const filePath = path.join(outputDir, 'inventoryOutput.js');
 
+const excelColLetterToIndex = (letter) =>
+	[...letter.toUpperCase()].reduce((a, c) => a * 26 + c.charCodeAt(0) - 64, 0) - 1;
+
 let obj = xlsx.parse(inputDir + '/List.xlsx');
-let data = obj[0].data;
+let data = obj[3].data.slice(8);
 
-const th = data.slice(0, 1)[0];
-const trs = data.slice(1, 91);
+// console.log('data.slice(0,2) :>> ', data.slice(0, 2));
 
-const types = {};
-const typeCurrentMirror = {};
-const typeCurrentSUR = {};
+const allUnitKesFromList = [];
+const allUnitKesFromUnitsInfo = [];
 
-th.forEach((cell, i) => {
-	if (cell.includes('BR')) types[i + 1] = cell;
+Object.entries(unitsInfoInput).forEach(([key, _]) => {
+	allUnitKesFromUnitsInfo.push(key);
 });
 
-trs.forEach((row) => {
-	row.forEach((cell, i) => {
-		if (['Normal', 'Mirror'].includes(cell)) typeCurrentMirror[types[i + 1]] = cell === 'Mirror';
-		if (cell.includes('SUR')) typeCurrentSUR[types[i - 1]] = cell.toLowerCase();
-		if (Object.keys(types).includes(i.toString())) {
-			if (!cell) return
-			if (row[i + 1]) typeCurrentSUR[types[i]] = row[i + 1].toLowerCase();
+data.forEach((row) => {
+	const unitNumber = row[excelColLetterToIndex('C')];
+	// if (!unitNumber || !unitNumber.includes("A1") || !unitNumber.includes("A2")) return
+	const unitKey = unitNumber?.replace('A', '')?.replace('-', '')?.trim();
 
-			const unitCode = `SE-R-${cell}`
-			
-			if (unitsInfo[unitCode]) {
-				const isMirror = typeCurrentMirror[types[i]]
-				unitsInfo[unitCode].view = typeCurrentSUR[types[i]]
-				if (isMirror) unitsInfo[unitCode].mirror = isMirror
-			}
-		}
-	});
+	if (!/^\d{4,5}$/.test(unitKey)) {
+		// console.log('Not tipical unit number :>> ', [unitNumber, unitKey])
+		return;
+	}
+
+	allUnitKesFromList.push(unitKey);
+
+	const internal_area = row[excelColLetterToIndex('F')];
+	const balcony_area = row[excelColLetterToIndex('G')] || row[excelColLetterToIndex('H')];
+	const saleable_area = row[excelColLetterToIndex('I')];
+
+	if (unitsInfoInput[unitKey]) {
+		if (!internal_area) console.log('Error internal_area :>> ', [unitNumber, internal_area]);
+		if (!balcony_area) console.log('Error balcony_area :>> ', [unitNumber, balcony_area]);
+		if (!saleable_area) console.log('Error saleable_area :>> ', [unitNumber, saleable_area]);
+
+		unitsInfoOutput[unitKey] = {
+			...unitsInfoInput[unitKey],
+			internal_area,
+			balcony_area,
+			saleable_area,
+		};
+	}
 });
 
+const missingUnitKeys = [];
+const missingUnitKeys1 = [];
 
-// const types = [];
+allUnitKesFromList.forEach((listKey) => {
+	if (!allUnitKesFromUnitsInfo.includes(listKey)) missingUnitKeys.push(listKey);
+});
 
-// data.map((el) => {
-// 	const unitNumber = el[0];
-// 	const type = el[2];
-// 	const category = type?.includes('V') ? 'villa' : 'townhouse';
-
-// 	console.log('category :>> ', category);
-
-// 	if (!types.includes(type)) types.push(type)
-
-// 	if (unitsInfo?.[unitNumber]) {
-// 		unitsInfo[unitNumber].type = type;
-// 		unitsInfo[unitNumber].category = category;
-// 	}
-// });
-
+allUnitKesFromUnitsInfo.forEach((listKey) => {
+	if (!allUnitKesFromList.includes(listKey)) missingUnitKeys1.push(listKey);
+});
 
 fs.writeFileSync(
 	filePath,
-	`// File Record Time: ${new Date()} \n\nexport default ` + util.inspect(unitsInfo, { showHidden: false, depth: null, maxArrayLength: null })
+	`// File Record Time: ${new Date()} \n\nexport default ` +
+		// util.inspect(unitsInfoOutput, { showHidden: false, depth: null, maxArrayLength: null })
+		util.inspect(
+			{ missingUnitKeys, missingUnitKeys1, unitsInfoOutput },
+			{ showHidden: false, depth: null, maxArrayLength: null }
+		)
 );
