@@ -3,7 +3,7 @@ import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import unitsInfoInput from '../input/unitsInfo.js';
-import { getCurrentDir, toCode } from './utils/index.js';
+import { getCurrentDir, toCode } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 

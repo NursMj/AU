@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { toCode } from './utils';
-import { getCurrentDir } from './utils/index.js';
+import { toCode, getCurrentDir } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 

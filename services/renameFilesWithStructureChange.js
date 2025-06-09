@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { toCode } from './utils/index.js';
+import { toCode } from './utils';
 
 const conditionToRenameFile = (file) => {
 	// return file.includes('SUR')

@@ -3,19 +3,23 @@ import translationConsumer from '../input/translation/translationConsumer.js';
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import { getCurrentDir } from './utils/index.js';
+import { getCurrentDir } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 
 const translationKeys = Object.keys(translation);
-const missingTranslations = [];
+const missingTranslations: string[] = [];
 const typeAndLvl = {};
+
+type TMark = {
+	text: string
+}
 
 Object.entries(translationConsumer).forEach(([typeKey, type]) => {
 	Object.entries(type).forEach(([floorKey, floors]) => {
 		Object.entries(floors).forEach(([markGroupKey, markGroupValue]) => {
 			if (markGroupKey === 'labels') {
-				markGroupValue.forEach((item) => {
+				markGroupValue.forEach((item: TMark) => {
 					if (!translationKeys.includes(item.text) && !missingTranslations.includes(item.text)) {
 						missingTranslations.push(item.text);
 						typeAndLvl[item.text] = typeKey + '_' + floorKey;

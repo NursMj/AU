@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS", // Match your current JS system
+    "allowJs": true,     // Critical for mixed codebase
+    "checkJs": true,     // Optional: type-check JS files
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,     // Start loose, enable gradually
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

@@ -2,7 +2,7 @@ import xlsx from 'node-xlsx';
 import fs from 'fs';
 import path from 'path';
 import util from 'util';
-import { getCurrentDir, toCode } from './utils/index.js';
+import { getCurrentDir, toCode } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 
