@@ -11,10 +11,13 @@ export const toCode = (str: string) =>
 		.replace(/_+/g, '_')
 		.replace('’', '');
 
-export function getCurrentDir(meta: {url: any}) {
+export const getCurrentDir = (meta: { url: any }) => {
 	return dirname(fileURLToPath(meta.url));
-}
+};
 
-export function getCurrentFile(meta: {url: any}) {
+export const getCurrentFile = (meta: { url: any }) => {
 	return fileURLToPath(meta.url);
-}
+};
+
+export const excelColLetterToIndex = (letter: string) =>
+	[...letter.toUpperCase()].reduce((a, c) => a * 26 + c.charCodeAt(0) - 64, 0) - 1;

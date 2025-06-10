@@ -2,12 +2,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { toCode } from './utils';
 
-const conditionToRenameFile = (file) => {
+const conditionToRenameFile = (file: string): boolean => {
 	// return file.includes('SUR')
 	return true;
 };
 
-const renameFunction = (file) => {
+const renameFunction = (file: string): string => {
 	return toCode(file)
 		.replace('_light', '')
 		.replace('_dark', '')
@@ -18,9 +18,13 @@ const renameFunction = (file) => {
 	// return file
 };
 
-const allFilesName = [];
+const allUniqFilesName: string[][] = [];
 
-async function renameFiles(dir, outputDir) {
+async function renameFiles(
+	dir: string, 
+	outputDir: string,
+ 	options = { isTopLevel: true }
+) {
 	try {
 		// Ensure the output directory exists
 		await fs.mkdir(outputDir, { recursive: true });
@@ -36,14 +40,14 @@ async function renameFiles(dir, outputDir) {
 				if (stats.isDirectory()) {
 					// Recursively handle subdirectories
 					const subDirOutput = path.join(outputDir, file);
-					await renameFiles(filePath, subDirOutput);
+					await renameFiles(filePath, subDirOutput, { isTopLevel: false });
 				} else if (stats.isFile()) {
 					if (conditionToRenameFile(file)) {
 						const newFileName = renameFunction(file);
 						const newFilePath = path.join(outputDir, newFileName);
 
-						if (!allFilesName.some(([name]) => name === newFileName)) {
-							allFilesName.push([newFileName, file]);
+						if (!allUniqFilesName.some(([name]) => name === newFileName)) {
+							allUniqFilesName.push([newFileName, file]);
 						}
 
 						await fs.copyFile(filePath, newFilePath);
@@ -57,8 +61,11 @@ async function renameFiles(dir, outputDir) {
 	} catch (err) {
 		console.error(`Unable to scan directory: ${err}`);
 	}
-	console.log('allFilesName :>> ', allFilesName);
-	console.log(`\nFinal result!\nAll renamed files created in this dir: ${outputDir}`);
+
+    if (options.isTopLevel) {
+		console.log('allUniqFilesName :>> ', allUniqFilesName);
+		console.log(`\nFinal result!\nAll renamed files created in this dir: ${outputDir}`);
+	}
 }
 
 const inputDir = './input/filesToRename';

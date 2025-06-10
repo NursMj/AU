@@ -6,9 +6,14 @@ import { getCurrentDir } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 
-const generatedTranslations = {};
+type TTranslation = {
+	en: string,
+	ar: string,
+}
 
-const getTranslation = (key) => {
+const generatedTranslations: Record<string, TTranslation> = {};
+
+const getTranslation = (key: string) => {
 	const translation = key
 		.split('_')
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())

@@ -4,9 +4,10 @@ import path from 'path';
 import util from 'util';
 import { getCurrentDir, toCode } from './utils';
 
+import unitsInfo from '../input/unitsInfo.js';
+
 const __dirname = getCurrentDir(import.meta);
 
-const unitsInfo = require('../input/unitsInfo.js');
 
 const outputDir = path.join(__dirname, '../output');
 const inputDir = path.join(__dirname, '../input');
@@ -16,22 +17,26 @@ const obj = xlsx.parse(inputDir + '/Sizes.xlsx');
 const headerRows = 1;
 const data = obj[0].data.slice(headerRows);
 
-let typesInfo = {};
-let currentLevelType = null;
-let currentType = null;
+type TRoomSize = any
+type TTypeInfo = Record<string, TRoomSize>
+type TTypesInfo = Record<string, TTypeInfo>
+
+let typesInfo: TTypesInfo = {};
+let currentLevelType: string | null = null;
+let currentType: string | null = null;
 
 // console.log(data.slice(0, 2))
 
-const setSyzeTypeForUnits = (arr, typeForSezes) => {
-	arr.forEach((unit) => {
-		const unitKey = 'BA_' + unit;
-		if (unitsInfo[unitKey]) {
-			unitsInfo[unitKey].type_for_sizes = typeForSezes;
-		} else {
-			console.log('no units info for :>> ', unitKey);
-		}
-	});
-};
+// const setSyzeTypeForUnits = (arr, typeForSezes) => {
+// 	arr.forEach((unit) => {
+// 		const unitKey = 'BA_' + unit;
+// 		if (unitsInfo[unitKey]) {
+// 			unitsInfo[unitKey].type_for_sizes = typeForSezes;
+// 		} else {
+// 			console.log('no units info for :>> ', unitKey);
+// 		}
+// 	});
+// };
 
 data.forEach((row, i) => {
 	const [levelType, _, unitType, unitNumbers, roomName, width, length] = row;
@@ -47,10 +52,10 @@ data.forEach((row, i) => {
 		typesInfo[ultraType] = {};
 	}
 
-	if (unitNumbers) {
-		const units = String(unitNumbers).replaceAll('.', ',').replaceAll(' ', '').split(',');
-		setSyzeTypeForUnits(units, ultraType);
-	}
+	// if (unitNumbers) {
+	// 	const units = String(unitNumbers).replaceAll('.', ',').replaceAll(' ', '').split(',');
+		// setSyzeTypeForUnits(units, ultraType);
+	// }
 
 	// const [length, width] = size.replace('х', 'x').replace('×', 'x').replace('  ', 'x').split('x')
 
@@ -72,3 +77,5 @@ fs.writeFileSync(
 	`// File Record Time: ${new Date()} \n\nexport default ` +
 		util.inspect({ typesInfo, unitsInfo }, { showHidden: false, depth: null, maxArrayLength: null })
 );
+
+console.log(`\nFinal result!\nThe result is written to a file at this path: ${outputFilePath}`);

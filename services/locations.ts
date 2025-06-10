@@ -2,39 +2,41 @@ import xlsx from 'node-xlsx';
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import { toCode, getCurrentDir } from './utils';
+import { toCode, getCurrentDir, excelColLetterToIndex } from './utils';
 
 const __dirname = getCurrentDir(import.meta);
 
-const locationsInfo = {};
+type TLocation = any
+type TLocationsInfo = Record<string, TLocation>
+
+
+const locationsInfo: TLocationsInfo = {};
 
 const outputDir = path.join(__dirname, '../output');
 const inputDir = path.join(__dirname, '../input');
 const outputFilePath = path.join(outputDir, 'locationsOutput.js');
-
-const excelLetterToIndex = (letter) => [...letter.toUpperCase()].reduce((a, c) => a * 26 + c.charCodeAt(0) - 64, 0) - 1;
 
 let obj = xlsx.parse(inputDir + '/Locations.xlsx');
 let data = obj[0].data.slice(1);
 
 // console.log('data.slice(0,2) :>> ', data.slice(0, 2));
 
-const projects = [];
-const categories = [];
-const locations = [];
+const projects: string[] = [];
+const categories: string[] = [];
+const locations: string[] = [];
 
 data.forEach((row) => {
-	const name = row[excelLetterToIndex('A')];
+	const name = row[excelColLetterToIndex('A')];
 
 	if (!name) return;
 
 	const projectKey = toCode(name);
-	const category = toCode(row[excelLetterToIndex('B')]);
-	const location = row[excelLetterToIndex('C')];
-	const location_link = row[excelLetterToIndex('D')];
-	const text = row[excelLetterToIndex('E')];
-	const website = row[excelLetterToIndex('F')];
-	const vrTour = row[excelLetterToIndex('G')];
+	const category = toCode(row[excelColLetterToIndex('B')]);
+	const location = row[excelColLetterToIndex('C')];
+	const location_link = row[excelColLetterToIndex('D')];
+	const text = row[excelColLetterToIndex('E')];
+	const website = row[excelColLetterToIndex('F')];
+	const vrTour = row[excelColLetterToIndex('G')];
 
 	projects.push(projectKey);
 	if (!categories.includes(category)) categories.push(category);

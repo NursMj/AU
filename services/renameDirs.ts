@@ -2,21 +2,18 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { toCode, getCurrentDir } from './utils';
 
-const __dirname = getCurrentDir(import.meta);
-
-const dirsToRename = ['Dark', 'Light'];
-
-const conditionToRenameDir = (file) => {
+const conditionToRenameDir = (file: string): boolean => {
+  // const dirsToRename = ['Dark', 'Light'];
   // return dirsToRename.includes(file)
   // return file.includes("_")
-  return true
+  return !!file
 }
 
-const renameFunction = (file) => {
+const renameFunction = (file: string): string => {
   return toCode(file)
 }
 
-async function renameDirs(dir) {
+async function renameDirs(dir: string) {
   try {
     const files = await fs.readdir(dir);
 

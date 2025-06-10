@@ -2,27 +2,29 @@ import xlsx from 'node-xlsx';
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import unitsInfoInput from '../input/unitsInfo.js';
-import { getCurrentDir, toCode } from './utils';
+import _unitsInfoInput from '../input/unitsInfo.js';
+import { getCurrentDir, toCode, excelColLetterToIndex } from './utils/index.js';
+
+type TUnitInfo = any
+type TUnitsInfo = Record<string, TUnitInfo>
+
+const unitsInfoInput = _unitsInfoInput as TUnitsInfo
 
 const __dirname = getCurrentDir(import.meta);
 
-const unitsInfoOutput = {};
+const unitsInfoOutput: TUnitsInfo = {};
 
 const outputDir = path.join(__dirname, '../output');
 const inputDir = path.join(__dirname, '../input');
 const outputFilePath = path.join(outputDir, 'inventoryOutput.js');
-
-const excelColLetterToIndex = (letter) =>
-	[...letter.toUpperCase()].reduce((a, c) => a * 26 + c.charCodeAt(0) - 64, 0) - 1;
 
 let obj = xlsx.parse(inputDir + '/List.xlsx');
 let data = obj[3].data.slice(8);
 
 // console.log('data.slice(0,2) :>> ', data.slice(0, 2));
 
-const allUnitKesFromList = [];
-const allUnitKesFromUnitsInfo = [];
+const allUnitKesFromList: string[] = [];
+const allUnitKesFromUnitsInfo: string[] = [];
 
 Object.entries(unitsInfoInput).forEach(([key, _]) => {
 	allUnitKesFromUnitsInfo.push(key);
@@ -31,7 +33,8 @@ Object.entries(unitsInfoInput).forEach(([key, _]) => {
 data.forEach((row) => {
 	const unitNumber = row[excelColLetterToIndex('C')];
 	// if (!unitNumber || !unitNumber.includes("A1") || !unitNumber.includes("A2")) return
-	const unitKey = unitNumber?.replace('A', '')?.replace('-', '')?.trim();
+	if (!unitNumber) return
+	const unitKey: string = unitNumber.toString().replace('A', '').replace('-', '').trim();
 
 	if (!/^\d{4,5}$/.test(unitKey)) {
 		// console.log('Not tipical unit number :>> ', [unitNumber, unitKey])
@@ -58,8 +61,8 @@ data.forEach((row) => {
 	}
 });
 
-const missingUnitKeys = [];
-const missingUnitKeys1 = [];
+const missingUnitKeys: string[] = [];
+const missingUnitKeys1: string[] = [];
 
 allUnitKesFromList.forEach((listKey) => {
 	if (!allUnitKesFromUnitsInfo.includes(listKey)) missingUnitKeys.push(listKey);

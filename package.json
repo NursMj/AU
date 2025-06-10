@@ -17,7 +17,6 @@
     "rd": "tsx ./services/renameDirs.js",
     "pi": "tsx ./services/inventory.js",
     "pl": "tsx ./services/locations.js",
-    "it": "tsx ./services/itirate.js",
     "ps": "tsx ./services/sizes.js",
     "gc": "tsx ./services/config.js",
     "ct": "tsx ./services/checkTranslation.ts",
