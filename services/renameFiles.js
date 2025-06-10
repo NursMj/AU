@@ -58,6 +58,7 @@ async function renameFiles(dir, outputDir) {
 		console.error(`Unable to scan directory: ${err}`);
 	}
 	console.log('allFilesName :>> ', allFilesName);
+	console.log(`\nFinal result!\nAll renamed files created in this dir: ${outputDir}`);
 }
 
 const inputDir = './input/filesToRename';

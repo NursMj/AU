@@ -31,4 +31,4 @@ locations.forEach(filename => {
     console.log(`Created: ${filePath}`);
 });
 
-console.log('SVG files generated successfully.');
+console.log(`\nFinal result!\nSVG files generated successfully in this dir: ${outputDir}`);

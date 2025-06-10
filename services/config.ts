@@ -124,3 +124,5 @@ fs.writeFileSync(
 	`// File Record Time: ${new Date()} \n\nexport default ` +
 		util.inspect(cfg, { showHidden: false, depth: null, maxArrayLength: null })
 );
+
+console.log(`\nFinal result!\nThe result is written to a file at this path: ${outputFilePath}`);

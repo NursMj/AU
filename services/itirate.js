@@ -105,10 +105,12 @@ Object.entries(allDataUnits).forEach(([tower, towerunits]) => {
 });
 
 const outputDir = path.join(__dirname, '../output');
-const filePath = path.join(outputDir, 'itirateOutput.js');
+const outputFilePath = path.join(outputDir, 'itirateOutput.js');
 
 fs.writeFileSync(
-	filePath,
+	outputFilePath,
 	`// File Record Time: ${new Date()}
 	export default ` + util.inspect(unitsInfo, { showHidden: false, depth: null, maxArrayLength: null })
 );
+
+console.log(`\nFinal result!\nThe result is written to a file at this path: ${outputFilePath}`);

@@ -11,7 +11,7 @@ const unitsInfoOutput = {};
 
 const outputDir = path.join(__dirname, '../output');
 const inputDir = path.join(__dirname, '../input');
-const filePath = path.join(outputDir, 'inventoryOutput.js');
+const outputFilePath = path.join(outputDir, 'inventoryOutput.js');
 
 const excelColLetterToIndex = (letter) =>
 	[...letter.toUpperCase()].reduce((a, c) => a * 26 + c.charCodeAt(0) - 64, 0) - 1;
@@ -70,7 +70,7 @@ allUnitKesFromUnitsInfo.forEach((listKey) => {
 });
 
 fs.writeFileSync(
-	filePath,
+	outputFilePath,
 	`// File Record Time: ${new Date()} \n\nexport default ` +
 		// util.inspect(unitsInfoOutput, { showHidden: false, depth: null, maxArrayLength: null })
 		util.inspect(
@@ -78,3 +78,5 @@ fs.writeFileSync(
 			{ showHidden: false, depth: null, maxArrayLength: null }
 		)
 );
+
+console.log(`\nFinal result!\nThe result is written to a file at this path: ${outputFilePath}`);
