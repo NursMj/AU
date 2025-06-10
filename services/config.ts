@@ -10,53 +10,38 @@ const outputDir = path.join(__dirname, '../output');
 const outputFilePath = path.join(outputDir, 'galleryCfgOutput.js');
 
 const skipDirs = ['pdf_file', 'Preview'];
-const skipFiles = ['Thumbs.db', "Yamm Beach Villas.pdf"];
+const skipFiles = ['Thumbs.db', 'Yamm Beach Villas.pdf'];
 
-// const all = [
-// 	'1 Waterfront View.jpg',
-// 	'2 Waterfront View.jpg',
-// 	'3 Arrival View.jpg',
-// 	'4 Residential Marina Overlook.jpg',
-// 	'5 Residential Side View.jpg',
-// 	'6 Waterfront Tower.jpg',
-// 	'7 Side View.jpg',
-// 	'8 Marina Promenade.jpg',
-// 	'9 Elevation.jpg',
-// 	'10 Facade.jpg',
-// 	'11 Facade.jpg',
-// 	'12 Side View.jpg',
-// 	'13 Front Elevation.jpg',
-// 	'14 Front Elevation.jpg',
-// 	'15 Drop Off.jpg',
-// 	'16 Drop Off.jpg',
-// 	'17 F&B Island-Tower.jpg',
-// 	'18 F&B Canopy.jpg',
-// 	'19 F&B Waterfront.jpg',
-// 	'20 Balcony View.jpg',
-// 	'21 Amenity 1F.jpg',
-// 	'22 Residential Lobby.jpg',
-// 	'23 Residential Lobby.jpg',
-// 	'24 Meeting Table.jpg',
-// 	'25 Double Height Space.jpg',
-// 	'26 Office Lobby A.jpg',
-// 	'27 Office Lobby B.jpg',
-// 	'28 Office Lobby C.jpg',
-// 	'29 Office Lobby D.jpg',
-// 	'30 Dining & Living Room.jpg',
-// ];
+type TItem = {
+	src: string;
+	thumb: string;
+	w: 1920;
+	h: 1080;
+	title: string;
+	desc: string;
+	mode: string;
+	isVideo: boolean;
+	videoSrc: string | false;
+};
 
-const cfg = {};
+type CfgStructure = {
+	[typeKey: string]: {
+		[subtypeKey: string]: TItem[];
+	};
+};
 
-function removeFirstWordIfNumber(str) {
+const cfg: CfgStructure = {};
+
+function removeFirstWordIfNumber(str: string) {
 	const words = str.trim().split(/\s+/);
-	if (words.length > 0 && !isNaN(words[0])) {
+	if (words.length > 0 && !isNaN(+words[0])) {
 		return words.slice(1).join(' ');
 	}
 	return str;
 }
 
-function getFilesPathsSync(dir) {
-	const allFilesName = [];
+function getFilesPathsSync(dir: string) {
+	const allFilesName: string[][] = [];
 	try {
 		const files = fs.readdirSync(dir);
 
@@ -105,16 +90,16 @@ const all = getFilesPathsSync(inputDir);
 
 all.forEach((file) => {
 	const [filePath, grandparentDir, parentDir, dirName, fileName] = file;
-    
-    if (fileName === "Thumbs.db") return
 
-    const isVideo = fileName.includes('.mp4')
-    if (dirName.toLowerCase() === 'animation' && !isVideo) return
-    const imageFile = fileName.replace('.mp4', '.jpg')
+	if (fileName === 'Thumbs.db') return;
+
+	const isVideo = fileName.includes('.mp4');
+	if (dirName.toLowerCase() === 'animation' && !isVideo) return;
+	const imageFile = fileName.replace('.mp4', '.jpg');
 	const imgSrc = `./images/gallery/${grandparentDir}/Full/${dirName}/${imageFile}`;
 	const prevSrc = `./images/gallery/${grandparentDir}/Preview/${dirName}/${imageFile}`;
 	const title = removeFirstWordIfNumber(imageFile.replace('.jpg', ''));
-    const videoSrc = isVideo ? `./images/gallery/${grandparentDir}/Full/${dirName}/${fileName}` : false;
+	const videoSrc = isVideo ? `./images/gallery/${grandparentDir}/Full/${dirName}/${fileName}` : false;
 
 	// const type = dirName.split(' ').slice(-1)[0].toLowerCase()
 

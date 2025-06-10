@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-export const toCode = (str) =>
+export const toCode = (str: string) =>
 	str
 		?.toLowerCase()
 		.trim()
@@ -11,10 +11,10 @@ export const toCode = (str) =>
 		.replace(/_+/g, '_')
 		.replace('’', '');
 
-export function getCurrentDir(meta) {
+export function getCurrentDir(meta: {url: any}) {
 	return dirname(fileURLToPath(meta.url));
 }
 
-export function getCurrentFile(meta) {
+export function getCurrentFile(meta: {url: any}) {
 	return fileURLToPath(meta.url);
 }

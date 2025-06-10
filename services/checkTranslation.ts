@@ -3,13 +3,13 @@ import translationConsumer from '../input/translation/translationConsumer.js';
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import { getCurrentDir } from './utils';
+import { getCurrentDir } from './utils/index.js';
 
 const __dirname = getCurrentDir(import.meta);
 
 const translationKeys = Object.keys(translation);
 const missingTranslations: string[] = [];
-const typeAndLvl = {};
+const typeAndLvl: Record<string, string> = {};
 
 type TMark = {
     text: string;
